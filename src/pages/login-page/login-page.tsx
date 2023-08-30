@@ -1,37 +1,22 @@
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Typography, TextField, Button } from '@mui/material'
-import { FormEvent, useState } from 'react'
+
+interface Inputs {
+    email: string,
+    password: string,
+};
 
 export const LoginPage = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    const [emailErrorMsg, setEmailErrorMsg] = useState('')
-    const [passwordErrorMsg, setPasswordErrorMsg] = useState('')
-    
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-
-        event.preventDefault()
-
-        const formElement = event.currentTarget
-
-        const formElements = formElement.elements as typeof formElement.elements & {
-            email: {value: string},
-            password: { value: string}
-        }
-        
-        const {email, password} = formElements
-        if (!email.value) {
-            setEmailErrorMsg('The email is required')
-        }
-        if (!password.value) {
-            setPasswordErrorMsg('The password is required')
-        }
-    }
+    const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
 
     return (
         <>
         <Typography component="h1">Login</Typography>
-        <form onSubmit={handleSubmit}>
-        <TextField label="Email" name="email" helperText={emailErrorMsg}></TextField>
-        <TextField label="Password" type="password" name="password" helperText={passwordErrorMsg}/>
+        <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField label="Email" {...register(('email'), {required: true })} helperText={errors.email && 'The email is required'}></TextField>
+        <TextField label="Password" type="password" {...register(('password'), {required: true })} helperText={errors.password && 'The password is required'}/>
         <Button type="submit">Submit</Button>
         </form>
     </>

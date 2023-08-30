@@ -16,7 +16,8 @@ describe('Login page', () => {
         expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
         expect(screen.getByRole('button', {name: /submit/i}) ).toBeInTheDocument()
     });
-    fit('should validate the inputs as required', async () => {
+
+    it('should validate the inputs as required', async () => {
         render(<LoginPage/>)
         
         // submit form

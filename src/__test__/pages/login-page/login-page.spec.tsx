@@ -31,7 +31,7 @@ describe('Login page', () => {
         expect(await screen.findByText(/The password is required/i)).toBeInTheDocument()
     });
 
-    fit('should validate the email format', async () => {
+    it('should validate the email format', async () => {
         render(<LoginPage/>)
         
         userEvent.type(screen.getByLabelText(/email/i),'invalid email')

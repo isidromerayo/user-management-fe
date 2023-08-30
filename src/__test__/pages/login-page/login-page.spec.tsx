@@ -13,5 +13,7 @@ describe('Login page', () => {
         render(<LoginPage/>)
         
         expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
+        expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
+        expect(screen.getByRole('button', {name: /submit/i}) ).toBeInTheDocument()
     });
 });

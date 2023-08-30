@@ -11,7 +11,7 @@ describe('Login page', () => {
         
         expect(screen.getByRole('heading', {name: /login/i} )).toBeInTheDocument()
     });
-    
+
     it('should render the form elements', () => {
         render(<LoginPage/>)
         
@@ -29,5 +29,15 @@ describe('Login page', () => {
         // expect validation errros
         expect(await screen.findByText(/The email is required/i)).toBeInTheDocument()
         expect(await screen.findByText(/The password is required/i)).toBeInTheDocument()
+    });
+
+    fit('should validate the email format', async () => {
+        render(<LoginPage/>)
+        
+        userEvent.type(screen.getByLabelText(/email/i),'invalid email')
+        userEvent.click(getSubmitBtn())
+
+        expect(await screen.findByText(/The email is not valid/i)).toBeInTheDocument()
+        
     });
 });

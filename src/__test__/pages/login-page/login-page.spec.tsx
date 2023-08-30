@@ -16,14 +16,14 @@ describe('Login page', () => {
         expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
         expect(screen.getByRole('button', {name: /submit/i}) ).toBeInTheDocument()
     });
-    it('should validate the inputs as required', () => {
+    fit('should validate the inputs as required', async () => {
         render(<LoginPage/>)
         
         // submit form
         userEvent.click(screen.getByRole('button', {name: /submit/i}))
 
         // expect validation errros
-        expect(screen.getByText(/The email is required/i)).toBeInTheDocument()
-        expect(screen.getByText(/The password is required/i)).toBeInTheDocument()
+        expect(await screen.findByText(/The email is required/i)).toBeInTheDocument()
+        expect(await screen.findByText(/The password is required/i)).toBeInTheDocument()
     });
 });

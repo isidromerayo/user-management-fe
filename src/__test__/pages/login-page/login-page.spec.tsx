@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { LoginPage } from '../../../pages/login-page/login-page';
-
 
 describe('Login page', () => {
    
@@ -15,5 +15,15 @@ describe('Login page', () => {
         expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
         expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
         expect(screen.getByRole('button', {name: /submit/i}) ).toBeInTheDocument()
+    });
+    it('should validate the inputs as required', () => {
+        render(<LoginPage/>)
+        
+        // submit form
+        userEvent.click(screen.getByRole('button', {name: /submit/i}))
+
+        // expect validation errros
+        expect(screen.getByText(/The email is required/i)).toBeInTheDocument()
+        expect(screen.getByText(/The password is required/i)).toBeInTheDocument()
     });
 });

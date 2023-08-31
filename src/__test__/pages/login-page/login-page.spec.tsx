@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LoginPage } from '../../../pages/login-page/login-page';
 
@@ -40,15 +40,16 @@ describe('Login page', () => {
         expect(await screen.findByText(/The email is not valid/i)).toBeInTheDocument()
         
     });
-    fit('should disable the submit button while is fetchind', async () => {
+    it('should disable the submit button while is fetchind', async () => {
         render(<LoginPage/>)
         
         expect(getSubmitBtn()).not.toBeDisabled()
 
-        userEvent.type(screen.getByLabelText(/email/i),'a@example.com')
-        userEvent.type(screen.getByLabelText(/password/i),'123456')
-        userEvent.click(getSubmitBtn())
+        await userEvent.type(screen.getByLabelText(/email/i),'a@example.com')
+        await userEvent.type(screen.getByLabelText(/password/i),'123456')
+        
+        await userEvent.click(getSubmitBtn())
 
-        expect(getSubmitBtn()).toBeDisabled()
+        await waitFor(() => expect(getSubmitBtn()).toBeDisabled())
     });
 });

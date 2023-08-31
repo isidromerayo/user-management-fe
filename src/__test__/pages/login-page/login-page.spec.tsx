@@ -40,4 +40,15 @@ describe('Login page', () => {
         expect(await screen.findByText(/The email is not valid/i)).toBeInTheDocument()
         
     });
+    fit('should disable the submit button while is fetchind', async () => {
+        render(<LoginPage/>)
+        
+        expect(getSubmitBtn()).not.toBeDisabled()
+
+        userEvent.type(screen.getByLabelText(/email/i),'a@example.com')
+        userEvent.type(screen.getByLabelText(/password/i),'123456')
+        userEvent.click(getSubmitBtn())
+
+        expect(getSubmitBtn()).toBeDisabled()
+    });
 });

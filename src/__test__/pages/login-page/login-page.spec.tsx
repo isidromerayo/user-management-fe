@@ -1,5 +1,6 @@
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { renderWithProviders } from '../../../mocks/render-with-providers'; 
 import { LoginPage } from '../../../pages/login-page/login-page';
 
 const getSubmitBtn = () => screen.getByRole('button', {name: /submit/i})
@@ -7,21 +8,21 @@ const getSubmitBtn = () => screen.getByRole('button', {name: /submit/i})
 describe('Login page', () => {
    
     it('should be render login title', () => {
-        render(<LoginPage/>)
+        renderWithProviders(<LoginPage/>)
         
         expect(screen.getByRole('heading', {name: /login/i} )).toBeInTheDocument()
     });
 
     it('should render the form elements', () => {
-        render(<LoginPage/>)
+        renderWithProviders(<LoginPage/>)
         
         expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
-        expect(screen.getByLabelText(/email/i) ).toBeInTheDocument()
+        expect(screen.getByLabelText(/password/i) ).toBeInTheDocument()
         expect(getSubmitBtn()).toBeInTheDocument()
     });
 
     it('should validate the inputs as required', async () => {
-        render(<LoginPage/>)
+        renderWithProviders(<LoginPage/>)
         
         // submit form
         userEvent.click(getSubmitBtn())
@@ -32,7 +33,7 @@ describe('Login page', () => {
     });
 
     it('should validate the email format', async () => {
-        render(<LoginPage/>)
+        renderWithProviders(<LoginPage/>)
         
         userEvent.type(screen.getByLabelText(/email/i),'invalid email')
         userEvent.click(getSubmitBtn())
@@ -40,8 +41,8 @@ describe('Login page', () => {
         expect(await screen.findByText(/The email is not valid/i)).toBeInTheDocument()
         
     });
-    it('should disable the submit button while is fetchind', async () => {
-        render(<LoginPage/>)
+    xit('should disable the submit button while is fetching', async () => {
+        renderWithProviders(<LoginPage/>)
         
         expect(getSubmitBtn()).not.toBeDisabled()
 

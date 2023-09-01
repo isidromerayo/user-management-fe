@@ -1,7 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithProviders } from '../../../mocks/render-with-providers'; 
+
 import { LoginPage } from '../../../pages/login-page/login-page';
+import { renderWithProviders } from '../../../mocks/render-with-providers';
 
 const getSubmitBtn = () => screen.getByRole('button', {name: /submit/i})
 

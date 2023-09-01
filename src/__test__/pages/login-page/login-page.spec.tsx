@@ -42,16 +42,19 @@ describe('Login page', () => {
         expect(await screen.findByText(/The email is not valid/i)).toBeInTheDocument()
         
     });
-    xit('should disable the submit button while is fetching', async () => {
-        renderWithProviders(<LoginPage/>)
-        
-        expect(getSubmitBtn()).not.toBeDisabled()
-
-        await userEvent.type(screen.getByLabelText(/email/i),'a@example.com')
-        await userEvent.type(screen.getByLabelText(/password/i),'123456')
-        
-        await userEvent.click(getSubmitBtn())
-
-        await waitFor(() => expect(getSubmitBtn()).toBeDisabled())
-    });
+    
+    xit('it should show a loading indicator while is fetching the login', async () => {
+    renderWithProviders(<LoginPage />)
+  
+    expect(
+      screen.queryByRole('progressbar', {name: /loading/i}),
+    ).not.toBeInTheDocument()
+  
+    await userEvent.type(screen.getByLabelText(/email/i), 'john.doe@mail.com')
+    await userEvent.type(screen.getByLabelText(/password/i), '123456')
+  
+    await userEvent.click(getSubmitBtn())
+  
+    expect(await screen.findByRole('progressbar', {name: /loading/i}))
+  })
 });

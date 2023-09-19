@@ -1,37 +1,53 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { Typography, TextField, Button, styled } from '@mui/material'
-import { yupResolver } from '@hookform/resolvers/yup';
-import { loginSchema } from './login-schema';
-import { useLoginMutation } from './use-login-mutations';
-import { Inputs } from './login-page.interfaces';
-import { StyledLoadder } from '../../components/loader';
+import {Typography, TextField, Button} from '@mui/material'
+import {useForm, SubmitHandler} from 'react-hook-form'
+import {yupResolver} from '@hookform/resolvers/yup'
 
-export const LoginPage = () => {
+import {StyledLoadder} from '../../components/loader'
+import {loginSchema} from './login-schema'
+import {Inputs} from './login-page.interfaces'
+import {useLoginMutation} from './use-login-mutation'
 
-    const mutation = useLoginMutation()
+export function LoginPage() {
+  const mutation = useLoginMutation()
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<Inputs>({
+    resolver: yupResolver(loginSchema),
+  })
 
-    const { 
-        register, 
-        handleSubmit, 
-        formState: { errors } 
-    } = useForm<Inputs>({
-        resolver: yupResolver(loginSchema)
-    });
+  const onSubmit: SubmitHandler<Inputs> = async ({email, password}) => {
+    mutation.mutate({email, password})
+    // console.log(mutation.isLoading)
+  }
 
-    const onSubmit: SubmitHandler<Inputs> = async ({email, password}) => {
-        mutation.mutate({email, password})
-    }
-    return (
-        <>
-        <Typography component="h1">Login</Typography>
+  return (
+    <>
+      <Typography component="h1">Login</Typography>
 
-        {mutation.isLoading && (<StyledLoadder role="progressbar" aria-label="loading" />)}
+      {mutation.isLoading && (
+        <div role="progressbar" aria-label="loading">loading...</div>
+      )}
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField label="Email" {...register(('email'), {required: true })} helperText={errors.email?.message}></TextField>
-        <TextField label="Password" type="password" {...register(('password'), {required: true })} helperText={errors.password?.message} />
-        <Button disabled={mutation.isLoading} type="submit">Submit</Button>
-        </form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          label="Email"
+          {...register('email', {required: true})}
+          helperText={errors.email?.message}
+        />
+
+        <TextField
+          label="Password"
+          type="password"
+          {...register('password', {required: true})}
+          helperText={errors.password?.message}
+        />
+
+        <Button disabled={mutation.isLoading} type="submit">
+          Submit
+        </Button>
+      </form>
     </>
-    )
+  )
 }

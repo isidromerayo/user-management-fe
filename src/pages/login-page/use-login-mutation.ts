@@ -3,7 +3,7 @@ import { useMutation } from "react-query"
 import { Inputs } from "./login-page.interfaces"
 
 const loginService = async (email: string, password: string) => {
-    const response = await axios.post('/login', {
+    await axios.post('/login', {
         email,
         password
     })

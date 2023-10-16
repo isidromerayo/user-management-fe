@@ -29,6 +29,11 @@ export function LoginPage() {
       {mutation.isLoading && (
         <div role="progressbar" aria-label="loading">loading...</div>
       )}
+      {
+        mutation.error && (
+          <Typography>Unexepected error, please try again</Typography>
+        )
+      }
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField

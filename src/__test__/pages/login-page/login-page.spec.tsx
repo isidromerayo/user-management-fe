@@ -4,6 +4,9 @@ import userEvent from '@testing-library/user-event';
 import { LoginPage } from '../../../pages/login-page/login-page';
 import { renderWithProviders } from '../../../mocks/render-with-providers';
 
+import {rest} from 'msw'
+import { server } from '../../../mocks/server';
+
 const getSubmitBtn = () => screen.getByRole('button', { name: /submit/i })
 
 describe('Login page', () => {
@@ -59,5 +62,20 @@ describe('Login page', () => {
     expect(
       await screen.findByRole('progressbar', {name: /loading/i}),
     ).toBeInTheDocument()
+  })
+
+  it('it should display "Unexepected error, please try again" when there is an error from api login', async () => {
+    server.use(
+      rest.post('/login', (req, res, ctx) => res(ctx.delay(1), ctx.status(500)))
+    )
+    renderWithProviders(<LoginPage />)
+
+    await userEvent.type(screen.getByLabelText(/email/i), 'john.doe@mail.com')
+    await userEvent.type(screen.getByLabelText(/password/i), '123456')
+
+    await userEvent.click(getSubmitBtn())
+
+    expect(await screen.findByText('Unexepected error, please try again')).toBeInTheDocument();
+
   })
 });

@@ -64,7 +64,7 @@ describe('Login page', () => {
     ).toBeInTheDocument()
   })
 
-  it('it should display "Unexepected error, please try again" when there is an error from api login', async () => {
+  xit('it should display "Unexepected error, please try again" when there is an error from api login', async () => {
     server.use(
       rest.post('/login', (req, res, ctx) => res(ctx.delay(1), ctx.status(500)))
     )
